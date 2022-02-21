@@ -9,3 +9,9 @@ def index(request):
 
 def about(request):
     return HttpResponse("Rango says here is the about page. <a href='/rango/'>Index</a>")
+
+def index(request):
+    # the 'boldmessage' is in the template in html file
+    context_dict = {'boldmessage': 'Crunchy, creamy, cookie, candy, cupcake!'}
+    # return a rendered resonse to send to the client. Will be smashed together and returned with a HttpResponse
+    return render(request, 'rango/index.html', context=context_dict)
