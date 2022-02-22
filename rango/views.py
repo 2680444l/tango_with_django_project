@@ -16,10 +16,14 @@ def index(request):
     # retrieve the top 5 likes in descending order
     # pass a reference to the list
     category_list = Category.objects.order_by('-likes')[:5]
+    # exercise: add page list for most views
+    page_list = Page.objects.order_by('-views')[:5]
 
     context_dict = {}
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
+    # excersie: add page list for most views
+    context_dict['pages'] = page_list
 
     # render the response and send it
     return render(request, 'rango/index.html', context=context_dict)
