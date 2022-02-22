@@ -13,13 +13,13 @@
             Rango says...
         </h1>
         <div>
-            hey there partner!<br />
-            <strong>{{ boldmessage }}</strong><br />
-            <!--- {{ boldmessage }} is a Django template variable ---> 
+            here is the about page. <br />
+            This tutorial has been put together by Yun Jen Lin. <br />
         </div>
         <div>
-            <a href="/rango/about/">About</a><br />
+            <a href="/rango/">Index</a><br />
             <img src="{% static 'images/rango.jpg' %}" alt="Picture of Rango" />
+            <img src="{{ MEDIA_URL }}cat.jpg" alt="Picture of a Cat" />
             <!--- alt is for the situation when the image doesn't show --->
         </div>
     </body>
