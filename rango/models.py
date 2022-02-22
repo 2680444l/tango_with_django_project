@@ -1,13 +1,22 @@
 from tabnanny import verbose
 from turtle import title
 from django.db import models
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
+    # when unique=True, it can be a primary key
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
-    # when unique=True, it can be a primary key
+    # will override the save() method of the Category method
+    slug = models.SlugField(unique=True)
+
+    # save the file from with spaces to without spaces
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
+
 
     # solve the typo issue
     class Meta:

@@ -21,4 +21,6 @@ app_name = 'rango'
 urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
+    # re_path() can also be used, it contains regular expression. But be careful when using
+    path('category/<slug:category_name_slug>/', views.show_category, name = 'show_category'),
 ]
