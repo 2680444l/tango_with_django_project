@@ -37,8 +37,10 @@ def index(request):
     return render(request, 'rango/index.html', context=context_dict)
 
 def about(request):
-    # no need to use context dictionary
-    return render(request, 'rango/about.html')
+    print(request.method)
+    print(request.user)
+    # pass through an empy dictionary 
+    return render(request, 'rango/about.html', {})
 
 # pass category_name_slug as a value in
 # must take at least one parameter, request
@@ -70,7 +72,7 @@ def add_category(request):
             # save the new category to the database
             form.save(commit=True)
             # redirect the user back to the home page
-            return redirect('/rango/')
+            return redirect(reverse('rango:index'))
         else:
             print(form.errors)
     
@@ -85,7 +87,7 @@ def add_page(request, category_name_slug):
     
     # If the category doesn't exit, redirect back to /rango/ page. 
     if category is None:
-        return redirect('/rango/')
+        return redirect(reverse('rango:index'))
 
     form = PageForm()
 

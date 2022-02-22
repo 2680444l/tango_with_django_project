@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load rango_template_tags %}
+
+<html>
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>
+            Rango - 
+            {% block title_block %}
+                How to Tango with Django!
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+        <div>
+             <!-- Add the block tag. body_block is the name of the block that we wish to create -->
+            {% block body_block %}
+                This is body_block's default content
+            {% endblock %}
+        </div>
+        <div> <!-- Exercise: adding the sidebar -->
+            {% block sidebar_block %}
+                {% get_category_list category %}
+            {% endblock %}
+        </div>
+        <!-- "<hr />" is horizontal rule: provides visual separation between body_block and links -->
+        <hr />
+        <div>
+            <ul>
+                <!-- ensure that the links are always present -->
+                <li><a href="{% url 'rango:add_category' %}">Add a New Category</a></li>
+                <li><a href="{% url 'rango:about' %}">About</a></li>
+                <li><a href="{% url 'rango:index' %}">Index</a></li>
+            </ul>
+        </div>
+    </body>
+</html>
+

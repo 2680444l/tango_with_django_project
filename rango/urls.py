@@ -16,6 +16,7 @@ Including another URLconf
 from django.urls import path
 from rango import views
 
+# a good practice to deal with URLS if there are many apps in the Django project
 app_name = 'rango'
 
 urlpatterns = [
