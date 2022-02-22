@@ -27,10 +27,13 @@ class PageForm(forms.ModelForm):
         # can also include by: 
         # fields = ('title', 'url', 'views')
     
+    # the clean() method
     def clean(self):
         cleaned_data = self.cleaned_data
+        # get method provided by the dictionary object. get() returns None if a user doens't enter a value into a form field
         url = cleaned_data.get('url')
 
+        # this doesn't deal with the situation of 'https://'
         if url and not url.startswith('http://'):
             url = f'http://{url}'
             cleaned_data['url'] = url
