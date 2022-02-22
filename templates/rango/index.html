@@ -18,6 +18,20 @@
             <!--- {{ boldmessage }} is a Django template variable ---> 
         </div>
         <div>
+        <!--- Django template language ---> 
+            {% if categories %}
+                <ul>
+                    {% for category in categories %}
+                        <li>{{ category.name }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <!--- Strong is bold ---> 
+                <strong>There are no categories present.</strong>
+            {% endif %}
+        </div>
+
+        <div>
             <a href="/rango/about/">About</a><br />
             <img src="{% static 'images/rango.jpg' %}" alt="Picture of Rango" />
             <!--- alt is for the situation when the image doesn't show --->
