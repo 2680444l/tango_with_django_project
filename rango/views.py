@@ -6,6 +6,10 @@ from django.shortcuts import render
 from rango.models import Category
 from rango.models import Page
 
+# import for add_category() -- Chapter 7
+from rango.forms import CategoryForm
+from django.shortcuts import redirect
+
 # Create your views here.
 from django.http import HttpResponse
 
@@ -46,3 +50,24 @@ def show_category(request, category_name_slug):
         context_dict['category'] = None
         context_dict['pages'] = None
     return render(request, 'rango/category.html', context=context_dict)
+
+# Chapter 7: form
+def add_category(request):
+    # create a category form
+    form = CategoryForm()
+
+    # A HTTP POST (is a post == user submitted data)
+    if request.method == 'POST':
+        # handle the POST request through the same URL
+        form = CategoryForm(request.POST)
+
+        # check if provided with a valid form
+        if form.is_valid():
+            # save the new category to the database
+            form.save(commit=True)
+            # redirect the user back to the home page
+            return redirect('/rango/')
+        else:
+            print(form.errors)
+    
+    return render(request, 'rango/add_category.html', {'form': form})

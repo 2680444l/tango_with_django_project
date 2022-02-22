@@ -23,4 +23,5 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     # re_path() can also be used, it contains regular expression. But be careful when using
     path('category/<slug:category_name_slug>/', views.show_category, name = 'show_category'),
+    path('add_category/', views.add_category, name = 'add_category'),
 ]
