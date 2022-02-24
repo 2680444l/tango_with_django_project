@@ -6,6 +6,7 @@ from rango.forms import CategoryForm
 from django.shortcuts import redirect
 from django.urls import reverse
 from rango.forms import PageForm
+from rango.forms import UserForm, UserProfileForm
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -57,7 +58,7 @@ def add_page(request, category_name_slug):
     except:
         category = None
     
-    # You cannot add a page to a Category that does not exist... DM
+    # cannot add a page to a Category that does not exist...
     if category is None:
         return redirect(reverse('rango:index'))
 
@@ -79,3 +80,34 @@ def add_page(request, category_name_slug):
     
     context_dict = {'form': form, 'category': category}
     return render(request, 'rango/add_page.html', context=context_dict)
+
+def register(request):
+    registered = False
+
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+        profile_form = UserProfileForm(request.POST)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            # hash the password
+            user.set_password(user.password)
+            user.save()
+
+            # commit = false so that we can set the attributes ourselves
+            profile = profile_form.save(commit=False)
+            # not save it straight away
+            profile.user = user
+
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            
+            profile.save()
+            registered = True
+        else:
+            print(user_form.errors, profile_form.errors)
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+    
+    return render(request, 'rango/register.html', context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})

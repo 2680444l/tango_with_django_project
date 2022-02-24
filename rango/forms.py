@@ -1,7 +1,10 @@
+from dataclasses import fields
+from pyexpat import model
 from django import forms
-from rango.models import Page, Category
+from rango.models import Page, Category, UserProfile
+from django.contrib.auth.models import User
 
-# We could add these forms to views.py, but it makes sense to split them off into their own file.
+# Forms can be in this file or can be split
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH, help_text="Please enter the category name.")
@@ -31,3 +34,16 @@ class PageForm(forms.ModelForm):
             cleaned_data['url'] = url
         
         return cleaned_data
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput()) # let the password not be seen
+
+    # Meta nested class for additional propeties
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('website', 'picture')
