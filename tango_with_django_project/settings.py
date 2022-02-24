@@ -33,8 +33,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
+    'django.contrib.auth',# provide authentication system
+    'django.contrib.contenttypes', # used by authentication app to track models installed in DB
+    # use python manage.py migrate whenever new app added
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -93,6 +94,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 6, }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -102,6 +104,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.HBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.HBKDF2SHA1PasswordHasher',
+
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

@@ -1,20 +1,13 @@
-from multiprocessing import context
-from tokenize import Name
 from django.shortcuts import render
-
-# Import the Category model from models.py
+from django.http import HttpResponse
 from rango.models import Category
 from rango.models import Page
 
 # import for add_category() -- Chapter 7
 from django.shortcuts import redirect
-
-# Create your views here.
-from django.http import HttpResponse
-
-# add Pages
-from rango.forms import PageForm
 from django.urls import reverse
+from rango.forms import PageForm
+from rango.forms import UserForm, UserProfileForm
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -25,58 +18,45 @@ from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 # created a view called index
 # this is for the main page view
 def index(request):
-    # retrieve the top 5 likes in descending order
-    # pass a reference to the list
     category_list = Category.objects.order_by('-likes')[:5]
-    # exercise: add page list for most views
     page_list = Page.objects.order_by('-views')[:5]
 
     context_dict = {}
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
-    # excersie: add page list for most views
     context_dict['pages'] = page_list
+    context_dict['extra'] = 'From the model solution on GitHub'
 
-    # render the response and send it
     return render(request, 'rango/index.html', context=context_dict)
 
 def about(request):
-    print(request.method)
-    print(request.user)
-    # pass through an empy dictionary 
-    return render(request, 'rango/about.html', {})
+    return render(request, 'rango/about.html')
 
-# pass category_name_slug as a value in
-# must take at least one parameter, request
 def show_category(request, category_name_slug):
     context_dict = {}
+
     try:
         category = Category.objects.get(slug=category_name_slug)
         pages = Page.objects.filter(category=category)
+
         context_dict['pages'] = pages
         context_dict['category'] = category
     except Category.DoesNotExist:
-        # if categories are not found, then display "no category"
-        context_dict['category'] = None
         context_dict['pages'] = None
+        context_dict['category'] = None
+    
     return render(request, 'rango/category.html', context=context_dict)
 
 # Chapter 7: form
 @login_required
 def add_category(request):
-    # create a category form
     form = CategoryForm()
 
-    # A HTTP POST (is a post == user submitted data)
     if request.method == 'POST':
-        # handle the POST request through the same URL
         form = CategoryForm(request.POST)
 
-        # check if provided with a valid form
         if form.is_valid():
-            # save the new category to the database
             form.save(commit=True)
-            # redirect the user back to the home page
             return redirect(reverse('rango:index'))
         else:
             print(form.errors)
@@ -88,10 +68,10 @@ def add_category(request):
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
-    except Category.DoesNotExist:
+    except:
         category = None
     
-    # If the category doesn't exit, redirect back to /rango/ page. 
+    # cannot add a page to a Category that does not exist...
     if category is None:
         return redirect(reverse('rango:index'))
 
@@ -107,15 +87,12 @@ def add_page(request, category_name_slug):
                 page.views = 0
                 page.save()
 
-                # redirect the user to show_category() view once the page is created
-                # hwargs is a dictionary to the reverse() function
                 return redirect(reverse('rango:show_category', kwargs={'category_name_slug': category_name_slug}))
         else:
-            print(form.errors)  # This could be better done; for the purposes of TwD, this is fine. DM.
+            print(form.errors)
     
     context_dict = {'form': form, 'category': category}
     return render(request, 'rango/add_page.html', context=context_dict)
-
 
 def register(request):
     registered = False

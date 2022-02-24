@@ -17,7 +17,11 @@
         {% block body_block %}
         {% endblock %}
         </div>
+<<<<<<< HEAD
         <div> <!-- Sidebar block added. DM -->
+=======
+        <div>
+>>>>>>> e5776896e0e81c2ac942e8a096ce93a860dfd88d
             {% block sidebar_block %}
                 {% get_category_list category %}
             {% endblock %}
@@ -25,9 +29,12 @@
         <hr />
         <div>
             <ul>
+<<<<<<< HEAD
             {% if user.is_authenticated %}
                 <li><a href="{% url 'rango:restricted' %}">Restricted Page</a></li>
                 <li><a href="{% url 'rango:logout' %}">Logout</a></li>
+=======
+>>>>>>> e5776896e0e81c2ac942e8a096ce93a860dfd88d
                 <li><a href="{% url 'rango:add_category' %}">Add a New Category</a></li>
             {% else %}
                 <li><a href="{% url 'rango:register' %}">Sign Up</a></li>
@@ -35,6 +42,7 @@
             {% endif %}
                 <li><a href="{% url 'rango:about' %}">About</a></li>
                 <li><a href="{% url 'rango:index' %}">Index</a></li>
+                <li><a href="{% url 'rango:register' %}">Sign Up</a></li>
             </ul>
         </div>
     </body>
