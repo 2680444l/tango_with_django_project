@@ -14,10 +14,6 @@ Rango says: <strong>thank you for registering!</strong>
 Rango says: <strong>register here!</strong><br />
 <form id="user_form" method="post" action="{% url 'rango:register' %}" enctype="multipart/form-data">
     {% csrf_token %}
-<<<<<<< HEAD
-=======
-    <!-- display the forms -->
->>>>>>> e5776896e0e81c2ac942e8a096ce93a860dfd88d
     {{ user_form.as_p }}
     {{ profile_form.as_p }}
 

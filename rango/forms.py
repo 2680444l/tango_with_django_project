@@ -1,10 +1,7 @@
-from dataclasses import fields
-from pyexpat import model
 from django import forms
-from rango.models import Page, Category, UserProfile
 from django.contrib.auth.models import User
+from rango.models import Page, Category, UserProfile
 
-# Forms can be in this file or can be split
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH, help_text="Please enter the category name.")

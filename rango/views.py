@@ -1,22 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from rango.models import Category
-from rango.models import Page
-
-# import for add_category() -- Chapter 7
-from django.shortcuts import redirect
 from django.urls import reverse
-from rango.forms import PageForm
-from rango.forms import UserForm, UserProfileForm
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from rango.models import Category, Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 
-# a def function represents a view
-# created a view called index
-# this is for the main page view
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
     page_list = Page.objects.order_by('-views')[:5]
@@ -47,7 +36,6 @@ def show_category(request, category_name_slug):
     
     return render(request, 'rango/category.html', context=context_dict)
 
-# Chapter 7: form
 @login_required
 def add_category(request):
     form = CategoryForm()
@@ -63,7 +51,6 @@ def add_category(request):
     
     return render(request, 'rango/add_category.html', {'form': form})
 
-# let users add pages in category
 @login_required
 def add_page(request, category_name_slug):
     try:
@@ -71,7 +58,6 @@ def add_page(request, category_name_slug):
     except:
         category = None
     
-    # cannot add a page to a Category that does not exist...
     if category is None:
         return redirect(reverse('rango:index'))
 
@@ -90,7 +76,7 @@ def add_page(request, category_name_slug):
                 return redirect(reverse('rango:show_category', kwargs={'category_name_slug': category_name_slug}))
         else:
             print(form.errors)
-    
+            
     context_dict = {'form': form, 'category': category}
     return render(request, 'rango/add_page.html', context=context_dict)
 

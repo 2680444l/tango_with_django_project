@@ -1,4 +1,3 @@
-from distutils.command.upload import upload
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User

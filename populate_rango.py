@@ -2,12 +2,9 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tango_with_django_project.settings')
 
 import django
-# import django project's settings
 django.setup()
-# import after the settings (django.setup())
 from rango.models import Category, Page
 
-# add category or pages here
 def populate():
     python_pages = [
         {'title': 'Official Python Tutorial',
@@ -35,8 +32,6 @@ def populate():
             'Django': {'pages': django_pages, 'views': 33, 'likes': 22},
             'Other Frameworks': {'pages': other_pages, 'views': 22, 'likes': 11} }
     
-    # Cats dictionary
-    # loop through all the pages
     for cat, cat_data in cats.items():
         c = add_cat(cat, views=cat_data['views'], likes=cat_data['likes'])
         for p in cat_data['pages']:
@@ -47,8 +42,6 @@ def populate():
             print(f'- {c}: {p}')
 
 def add_page(cat, title, url, views=0):
-    # get_or_create() -->  creating model instances in the population script above
-    #                 -->  returns a tuple of (object, created)
     p = Page.objects.get_or_create(category=cat, title=title)[0]
     p.url=url
     p.views=views
@@ -62,7 +55,6 @@ def add_cat(name, views=0, likes=0):
     c.save()
     return c
 
-# execution is not made unless this method is called: use "$ python module.py" in the command line
 if __name__ == '__main__':
     print('Starting Rango population script...')
     populate()
